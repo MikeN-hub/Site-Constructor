@@ -1,5 +1,5 @@
 const model = [
-    {type: 'title', value: 'Hello world from JS'},
+    {type: 'title', value: 'Hello world from JS!!!'},
     {type: 'text', value: 'some text...'},
     {type: 'columns', value: [
         '111111',
@@ -7,7 +7,7 @@ const model = [
         '333333',
         '444444'
     ]},
-    {type: 'image', value: 'assets/image.png'}
+    {type: 'image', value: 'src/assets/image.png'}
 ]
 
 const $site = document.getElementById('site')
