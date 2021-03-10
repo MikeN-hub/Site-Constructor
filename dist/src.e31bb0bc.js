@@ -117,10 +117,23 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"index.js":[function(require,module,exports) {
+})({"assets/image.png":[function(require,module,exports) {
+module.exports = "/image.90ac9039.png";
+},{}],"model.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.model = void 0;
+
+var _image = _interopRequireDefault(require("./assets/image.png"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var model = [{
   type: 'title',
-  value: 'Hello world from JS!!!'
+  value: 'Hello world from JS'
 }, {
   type: 'text',
   value: 'some text...'
@@ -129,44 +142,152 @@ var model = [{
   value: ['111111', '222222', '333333', '444444']
 }, {
   type: 'image',
-  value: 'src/assets/image.png'
+  value: _image.default
 }];
-var $site = document.getElementById('site');
-model.forEach(function (block) {
-  var html = '';
+exports.model = model;
+},{"./assets/image.png":"assets/image.png"}],"utils.js":[function(require,module,exports) {
+"use strict";
 
-  if (block.type === 'title') {
-    html = title(block);
-  } else if (block.type === 'text') {
-    html = text(block);
-  } else if (block.type === 'columns') {
-    html = columns(block);
-  } else if (block.type === 'image') {
-    html = image(block);
-  }
-
-  $site.insertAdjacentHTML('beforeend', html);
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
+exports.row = row;
+exports.col = col;
+
+function row(content) {
+  return "\n        <div class=\"row\">".concat(content, "</div>\n    ");
+}
+
+function col(content) {
+  return "\n        <div class=\"col-sm\">".concat(content, "</div>\n    ");
+}
+},{}],"templates.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.templates = void 0;
+
+var _utils = require("./utils");
 
 function title(block) {
-  return "\n        <div class=\"row\">\n            <div class=\"col-sm\">\n                <h1>".concat(block.value, "</h1>\n            </div>\n        </div>\n    ");
+  return (0, _utils.row)((0, _utils.col)("<h1>".concat(block.value, "</h1>")));
 }
 
 function text(block) {
-  return "\n        <div class=\"row\">\n            <div class=\"col-sm\">\n                <p>".concat(block.value, "</p>\n            </div>\n        </div>\n    ");
+  return (0, _utils.row)((0, _utils.col)("<p>".concat(block.value, "</p>")));
 }
 
 function columns(block) {
   var html = block.value.map(function (item) {
-    return "<div class=\"col-sm\">".concat(item, "</div>");
+    return (0, _utils.col)(item);
   }).join('');
-  return "\n        <div class=\"row\">\n            ".concat(html, "\n        </div>\n    ");
+  return (0, _utils.row)(html);
 }
 
 function image(block) {
-  return "\n        <div class=\"row\">\n            <img src=\"".concat(block.value, "\">\n        </div>\n    ");
+  return (0, _utils.row)("<img src=\"".concat(block.value, "\"></img>"));
 }
-},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+var templates = {
+  title: title,
+  text: text,
+  columns: columns,
+  image: image
+};
+exports.templates = templates;
+},{"./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"styles/main.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _model = require("./model");
+
+var _templates = require("./templates");
+
+require("./styles/main.css");
+
+var $site = document.getElementById('site');
+
+_model.model.forEach(function (block) {
+  var toHTML = _templates.templates[block.type];
+
+  if (toHTML) {
+    $site.insertAdjacentHTML('beforeend', toHTML(block));
+  }
+});
+},{"./model":"model.js","./templates":"templates.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -194,7 +315,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49592" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53324" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
